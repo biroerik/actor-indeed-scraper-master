@@ -146,6 +146,28 @@ Apify.main(async () => {
       log.info(
         `Label(Page type): ${request.userData.label} || URL: ${request.url}`
       );
+
+      let companyWebsite = "";
+      $({
+        url: $(".jobsearch-JobInfoHeader-subtitle > div")
+          .eq(0)
+          .attr("href")
+          .match(/page=([0-9]+)/)[1],
+        dataType: "text",
+        success: function (data) {
+          var element = $("[data-testid*='companyInfo-companyWebsite'] a").attr(
+            "href"
+          );
+
+          companyWebsite = element;
+        },
+      });
+      log.info(
+        $(".jobsearch-JobInfoHeader-subtitle > div")
+          .eq(0)
+          .attr("href")
+          .match(/page=([0-9]+)/)[1]
+      );
       const urlParsed = urlParse(request.url);
 
       if (![200, 404].includes(response.statusCode)) {
@@ -233,28 +255,6 @@ Apify.main(async () => {
           }
           break;
         case "DETAIL":
-          let companyWebsite = "";
-          $({
-            url: $(".jobsearch-JobInfoHeader-subtitle > div")
-              .eq(0)
-              .attr("href")
-              .match(/page=([0-9]+)/)[1],
-            dataType: "text",
-            success: function (data) {
-              var element = $(
-                "[data-testid*='companyInfo-companyWebsite'] a"
-              ).attr("href");
-
-              companyWebsite = element;
-            },
-          });
-          log.info(
-            $(".jobsearch-JobInfoHeader-subtitle > div")
-              .eq(0)
-              .attr("href")
-              .match(/page=([0-9]+)/)[1]
-          );
-
           if (!(maxItems && itemsCounter > maxItems)) {
             let result = {
               positionName: $(".jobsearch-JobInfoHeader-title").text().trim(),
