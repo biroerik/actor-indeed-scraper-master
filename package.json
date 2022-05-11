@@ -1,0 +1,12 @@
+{
+    "name": "indeed_com_scraper",
+    "version": "0.0.1",
+    "dependencies": {
+        "apify": "2.2.2",
+        "url-parse": "latest"
+    },
+    "scripts": {
+        "start": "node src/main.js"
+    },
+    "author": "Apify"
+}
