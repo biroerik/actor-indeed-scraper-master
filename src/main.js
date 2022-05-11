@@ -148,11 +148,14 @@ Apify.main(async () => {
       );
 
       let companyWebsite = "";
+      log.info(
+        $(".jobsearch-InlineCompanyRating > div").eq(1).find("a").attr("href")
+      );
       $({
-        url: $(".jobsearch-JobInfoHeader-subtitle > div")
-          .eq(0)
-          .attr("href")
-          .match(/page=([0-9]+)/)[1],
+        url: $(".jobsearch-InlineCompanyRating > div")
+          .eq(1)
+          .find("a")
+          .attr("href"),
         dataType: "text",
         success: function (data) {
           var element = $("[data-testid*='companyInfo-companyWebsite'] a").attr(
@@ -163,10 +166,7 @@ Apify.main(async () => {
         },
       });
       log.info(
-        $(".jobsearch-JobInfoHeader-subtitle > div")
-          .eq(0)
-          .attr("href")
-          .match(/page=([0-9]+)/)[1]
+        $(".jobsearch-InlineCompanyRating > div").eq(1).find("a").attr("href")
       );
       const urlParsed = urlParse(request.url);
 
