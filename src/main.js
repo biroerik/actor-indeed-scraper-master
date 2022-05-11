@@ -244,7 +244,7 @@ Apify.main(async () => {
               var element = $(
                 "[data-testid*='companyInfo-companyWebsite'] a"
               ).attr("href");
-              console.log(element);
+              log.info(element);
               companyWebsite = element;
             },
           });
