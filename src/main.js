@@ -211,9 +211,10 @@ Apify.main(async () => {
             itemsCounter < maxItemsOnSite &&
             hasNextPage
           ) {
-            const nextPage = $(`a[aria-label="${currentPageNumber}"]`).attr(
-              "href"
-            );
+            const nextPage = $(".jobsearch-InlineCompanyRating > div")
+              .eq(1)
+              .find("a")
+              .attr("href");
 
             // Indeed has  inconsistent order of items on LIST pages, that is why there are a lot of duplicates. To get all unique items, we enqueue each LIST page 5 times
             for (let i = 0; i < 5; i++) {
@@ -230,27 +231,6 @@ Apify.main(async () => {
           }
           break;
         case "DETAIL":
-          let companyWebsite = "";
-          log.info(
-            $(".jobsearch-InlineCompanyRating > div")
-              .eq(1)
-              .find("a")
-              .attr("href")
-          );
-          $({
-            url: $(".jobsearch-InlineCompanyRating > div")
-              .eq(1)
-              .find("a")
-              .attr("href"),
-            dataType: "text",
-            success: function (data) {
-              var element = $(
-                "[data-testid*='companyInfo-companyWebsite'] a"
-              ).attr("href");
-
-              companyWebsite = element;
-            },
-          });
           if (!(maxItems && itemsCounter > maxItems)) {
             let result = {
               positionName: $(".jobsearch-JobInfoHeader-title").text().trim(),
@@ -278,7 +258,9 @@ Apify.main(async () => {
                 .trim(),
               scrapedAt: new Date().toISOString(),
               description: $('div[id="jobDescriptionText"]').text(),
-              companyWebsite,
+              companyWebsite: $(
+                "[data-testid*='companyInfo-companyWebsite'] a"
+              ).attr("href"),
             };
 
             if (
