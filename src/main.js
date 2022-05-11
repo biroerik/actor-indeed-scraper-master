@@ -244,10 +244,16 @@ Apify.main(async () => {
               var element = $(
                 "[data-testid*='companyInfo-companyWebsite'] a"
               ).attr("href");
-              log.info(element);
+
               companyWebsite = element;
             },
           });
+          log.info(
+            $(".jobsearch-JobInfoHeader-subtitle > div")
+              .eq(0)
+              .attr("href")
+              .match(/page=([0-9]+)/)[1]
+          );
 
           if (!(maxItems && itemsCounter > maxItems)) {
             let result = {
